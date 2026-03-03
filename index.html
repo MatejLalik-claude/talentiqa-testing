@@ -3,140 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Talentiqa Test Assistant</title>
+<title>Talentiqa Complete Test Suite</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;600;700;800&display=swap');
-
-:root {
-  --bg: #0d0d0f;
-  --surface: #16161a;
-  --surface2: #1e1e24;
-  --border: #2a2a35;
-  --accent: #7c6af7;
-  --accent2: #f76a8a;
-  --green: #4ade80;
-  --yellow: #fbbf24;
-  --red: #f87171;
-  --text: #e8e8f0;
-  --muted: #6b6b82;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; padding: 28px 20px 60px; max-width: 960px; margin: 0 auto; }
-
-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-.logo-box { width: 48px; height: 48px; flex-shrink: 0; background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-.header-text h1 { font-size: 1.35rem; font-weight: 800; }
-.header-text h1 span { color: var(--accent); }
-.header-text p { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 3px; }
-
-.tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 5px; margin-bottom: 24px; }
-.tab { flex: 1; padding: 9px 6px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: none; background: transparent; color: var(--muted); transition: all 0.2s; text-align: center; }
-.tab.active { background: var(--accent); color: #fff; }
-.tab:hover:not(.active) { color: var(--text); background: var(--surface2); }
-
-.panel { display: none; }
-.panel.active { display: block; }
-
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 16px; }
-.card-title { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
-.card-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-
-label { display: block; font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 5px; margin-top: 12px; }
-label:first-child { margin-top: 0; }
-input, select, textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.83rem; padding: 9px 13px; outline: none; transition: border-color 0.2s; }
-input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-select option { background: #1e1e24; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-.btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 8px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; cursor: pointer; border: none; transition: all 0.2s; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover:not(:disabled) { background: #6a58e8; transform: translateY(-1px); }
-.btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--border); }
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-
-.run-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.run-badge { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; font-weight: 800; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.08em; }
-.run-title { font-size: 1rem; font-weight: 700; }
-
-.scenario { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
-.scenario-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; cursor: pointer; user-select: none; transition: background 0.15s; }
-.scenario-header:hover { background: rgba(124,106,247,0.05); }
-.scenario-left { display: flex; align-items: center; gap: 10px; }
-.scenario-num { width: 26px; height: 26px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
-.scenario-name { font-size: 0.88rem; font-weight: 600; }
-.scenario-right { display: flex; align-items: center; gap: 8px; }
-.scenario-body { display: none; padding: 0 16px 14px; }
-.scenario-body.open { display: block; }
-
-.step-list { list-style: none; counter-reset: sc; }
-.step-list li { counter-increment: sc; display: flex; gap: 10px; padding: 5px 0; font-size: 0.81rem; font-family: 'DM Mono', monospace; color: var(--muted); border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.5; }
-.step-list li:last-child { border-bottom: none; }
-.step-list li::before { content: counter(sc) "."; color: var(--accent); flex-shrink: 0; font-weight: 500; min-width: 20px; }
-.step-list li strong { color: var(--text); }
-
-.expected { margin-top: 8px; padding: 8px 12px; background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.2); border-radius: 7px; font-size: 0.78rem; font-family: 'DM Mono', monospace; color: var(--green); }
-.expected::before { content: "✓ Očakávaný výsledok: "; font-weight: 500; }
-
-.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 20px; font-size: 0.7rem; font-family: 'DM Mono', monospace; font-weight: 500; }
-.badge-purple { background: rgba(124,106,247,0.15); color: var(--accent); border: 1px solid rgba(124,106,247,0.3); }
-.badge-green  { background: rgba(74,222,128,0.15); color: var(--green);  border: 1px solid rgba(74,222,128,0.3); }
-.badge-yellow { background: rgba(251,191,36,0.15); color: var(--yellow); border: 1px solid rgba(251,191,36,0.3); }
-.badge-red    { background: rgba(248,113,113,0.15); color: var(--red);   border: 1px solid rgba(248,113,113,0.3); }
-
-.status-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-.status-btn { padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-family: 'DM Mono', monospace; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all 0.15s; }
-.status-btn:hover { border-color: var(--accent); color: var(--accent); }
-.status-btn.active-pass { background: rgba(74,222,128,0.15); color: var(--green); border-color: rgba(74,222,128,0.4); }
-.status-btn.active-fail { background: rgba(248,113,113,0.15); color: var(--red); border-color: rgba(248,113,113,0.4); }
-.status-btn.active-skip { background: rgba(251,191,36,0.15); color: var(--yellow); border-color: rgba(251,191,36,0.4); }
-
-.summary-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-.summary-stat { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
-.summary-stat .val { font-size: 1.6rem; font-weight: 800; }
-.summary-stat .lbl { font-size: 0.7rem; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
-.val-pass { color: var(--green); } .val-fail { color: var(--red); } .val-skip { color: var(--yellow); } .val-total { color: var(--accent); }
-
-.progress-track { width: 100%; height: 4px; background: var(--border); border-radius: 2px; margin-top: 10px; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.4s ease; }
-
-.logo-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-.logo-opt { position: relative; cursor: pointer; border-radius: 10px; overflow: hidden; border: 2px solid transparent; transition: border-color 0.2s; }
-.logo-opt:hover { border-color: rgba(124,106,247,0.5); }
-.logo-opt.selected { border-color: var(--accent); }
-.logo-opt img { width: 88px; height: 88px; object-fit: cover; display: block; }
-.logo-opt .check { display: none; position: absolute; top: 5px; right: 5px; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; align-items: center; justify-content: center; font-size: 11px; }
-.logo-opt.selected .check { display: flex; }
-
-.copy-wrap { position: relative; }
-.copy-btn { position: absolute; top: 10px; right: 10px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 0.7rem; font-family: 'DM Mono', monospace; padding: 3px 9px; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
-.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
-
-.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.ai-messages { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; max-height: 340px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; }
-.ai-messages::-webkit-scrollbar { width: 5px; }
-.ai-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-.msg { display: flex; gap: 10px; }
-.msg-ai { flex-direction: row; } .msg-user { flex-direction: row-reverse; }
-.msg-avatar { width: 30px; height: 30px; flex-shrink: 0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-.msg-ai .msg-avatar { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
-.msg-user .msg-avatar { background: var(--surface2); border: 1px solid var(--border); }
-.msg-bubble { max-width: 80%; padding: 9px 13px; border-radius: 10px; font-size: 0.82rem; font-family: 'DM Mono', monospace; line-height: 1.6; white-space: pre-wrap; }
-.msg-ai .msg-bubble { background: var(--surface2); color: var(--text); }
-.msg-user .msg-bubble { background: rgba(124,106,247,0.2); color: var(--text); border: 1px solid rgba(124,106,247,0.3); }
-.msg-bubble.loading { animation: pulse 1.5s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-.ai-input-row { display: flex; gap: 8px; }
-.ai-input-row input { flex: 1; }
-
-.result-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-family: 'DM Mono', monospace; font-size: 0.82rem; line-height: 1.7; color: var(--text); white-space: pre-wrap; word-break: break-word; }
-
-hr.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap');
+:root{--bg:#0d0d0f;--surface:#16161a;--surface2:#1e1e24;--border:#2a2a35;--accent:#7c6af7;--accent2:#f76a8a;--green:#4ade80;--yellow:#fbbf24;--red:#f87171;--text:#e8e8f0;--muted:#6b6b82}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;padding:28px 20px 60px;max-width:980px;margin:0 auto}
+header{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.logo-box{width:48px;height:48px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.header-text h1{font-size:1.35rem;font-weight:800}.header-text h1 span{color:var(--accent)}
+.header-text p{font-size:0.75rem;color:var(--muted);font-family:'DM Mono',monospace;margin-top:3px}
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:5px;margin-bottom:24px;flex-wrap:wrap}
+.tab{flex:1;min-width:70px;padding:8px 6px;border-radius:8px;font-size:0.71rem;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all 0.2s;text-align:center}
+.tab.active{background:var(--accent);color:#fff}
+.tab:hover:not(.active){color:var(--text);background:var(--surface2)}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.card-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+label{display:block;font-size:0.75rem;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:5px;margin-top:12px}
+label:first-child{margin-top:0}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:0.83rem;padding:9px 13px;outline:none;transition:border-color 0.2s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:80px;line-height:1.6}
+select option{background:#1e1e24}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer;border:none;transition:all 0.2s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover:not(:disabled){background:#6a58e8;transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn:disabled{opacity:0.45;cursor:not-allowed}
+.btn-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.run-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.run-badge{color:#fff;font-weight:800;font-size:0.72rem;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em}
+.run-title{font-size:1rem;font-weight:700}
+.scenario{background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.scenario-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;user-select:none;transition:background 0.15s}
+.scenario-header:hover{background:rgba(124,106,247,0.05)}
+.scenario-left{display:flex;align-items:center;gap:10px}
+.scenario-num{width:26px;height:26px;border-radius:6px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--accent);flex-shrink:0}
+.scenario-name{font-size:0.88rem;font-weight:600}
+.scenario-right{display:flex;align-items:center;gap:8px}
+.scenario-body{display:none;padding:0 16px 14px}
+.scenario-body.open{display:block}
+.step-list{list-style:none;counter-reset:sc}
+.step-list li{counter-increment:sc;display:flex;gap:10px;padding:5px 0;font-size:0.81rem;font-family:'DM Mono',monospace;color:var(--muted);border-bottom:1px solid rgba(255,255,255,0.04);line-height:1.5}
+.step-list li:last-child{border-bottom:none}
+.step-list li::before{content:counter(sc)".";color:var(--accent);flex-shrink:0;font-weight:500;min-width:20px}
+.step-list li strong{color:var(--text)}
+.expected{margin-top:8px;padding:8px 12px;background:rgba(74,222,128,0.07);border:1px solid rgba(74,222,128,0.2);border-radius:7px;font-size:0.78rem;font-family:'DM Mono',monospace;color:var(--green)}
+.expected::before{content:"✓ Očakávaný výsledok: ";font-weight:500}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:0.7rem;font-family:'DM Mono',monospace;font-weight:500}
+.badge-purple{background:rgba(124,106,247,0.15);color:var(--accent);border:1px solid rgba(124,106,247,0.3)}
+.badge-green{background:rgba(74,222,128,0.15);color:var(--green);border:1px solid rgba(74,222,128,0.3)}
+.badge-yellow{background:rgba(251,191,36,0.15);color:var(--yellow);border:1px solid rgba(251,191,36,0.3)}
+.badge-red{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.3)}
+.status-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.status-btn{padding:3px 10px;border-radius:20px;font-size:0.7rem;font-family:'DM Mono',monospace;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all 0.15s}
+.status-btn:hover{border-color:var(--accent);color:var(--accent)}
+.status-btn.active-pass{background:rgba(74,222,128,0.15);color:var(--green);border-color:rgba(74,222,128,0.4)}
+.status-btn.active-fail{background:rgba(248,113,113,0.15);color:var(--red);border-color:rgba(248,113,113,0.4)}
+.status-btn.active-skip{background:rgba(251,191,36,0.15);color:var(--yellow);border-color:rgba(251,191,36,0.4)}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.summary-stat{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.summary-stat .val{font-size:1.6rem;font-weight:800}
+.summary-stat .lbl{font-size:0.7rem;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px}
+.val-pass{color:var(--green)}.val-fail{color:var(--red)}.val-skip{color:var(--yellow)}.val-total{color:var(--accent)}
+.progress-track{width:100%;height:4px;background:var(--border);border-radius:2px;margin-top:10px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.4s ease}
+.copy-wrap{position:relative}
+.copy-btn{position:absolute;top:10px;right:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:0.7rem;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:6px;cursor:pointer;transition:all 0.15s}
+.copy-btn:hover{color:var(--accent);border-color:var(--accent)}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-messages{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;max-height:360px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:10px}
+.ai-messages::-webkit-scrollbar{width:5px}
+.ai-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.msg{display:flex;gap:10px}
+.msg-ai{flex-direction:row}.msg-user{flex-direction:row-reverse}
+.msg-avatar{width:30px;height:30px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.msg-ai .msg-avatar{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.msg-user .msg-avatar{background:var(--surface2);border:1px solid var(--border)}
+.msg-bubble{max-width:82%;padding:9px 13px;border-radius:10px;font-size:0.82rem;font-family:'DM Mono',monospace;line-height:1.6;white-space:pre-wrap}
+.msg-ai .msg-bubble{background:var(--surface2);color:var(--text)}
+.msg-user .msg-bubble{background:rgba(124,106,247,0.2);color:var(--text);border:1px solid rgba(124,106,247,0.3)}
+.msg-bubble.loading{animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.ai-input-row{display:flex;gap:8px}
+.ai-input-row input{flex:1}
+.result-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'DM Mono',monospace;font-size:0.82rem;line-height:1.7;color:var(--text);white-space:pre-wrap;word-break:break-word}
+hr.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+.data-box{background:var(--bg);border:1px solid rgba(124,106,247,0.25);border-radius:10px;padding:14px;font-family:'DM Mono',monospace;font-size:0.82rem;display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.data-key{color:var(--muted);font-size:0.72rem;margin-top:6px}
+.data-val{color:var(--text);font-weight:500}
+.logo-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.logo-opt{position:relative;cursor:pointer;border-radius:10px;overflow:hidden;border:2px solid transparent;transition:border-color 0.2s}
+.logo-opt:hover{border-color:rgba(124,106,247,0.5)}
+.logo-opt.selected{border-color:var(--accent)}
+.logo-opt img{width:80px;height:80px;object-fit:cover;display:block}
+.logo-opt .check{display:none;position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--accent);border-radius:50%;align-items:center;justify-content:center;font-size:10px}
+.logo-opt.selected .check{display:flex}
 </style>
 </head>
 <body>
@@ -144,421 +111,701 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; 
 <header>
   <div class="logo-box">🧪</div>
   <div class="header-text">
-    <h1>Talentiqa <span>Test Assistant</span></h1>
-    <p>dev.portal-app.talentiqa.ai · Run 1 + Run 2 · Matej Lalik</p>
+    <h1>Talentiqa <span>Complete Test Suite</span></h1>
+    <p>dev.admin.talentiqa.ai + dev.portal-app.talentiqa.ai · matejlalik@gmail.com</p>
   </div>
 </header>
 
 <div class="tabs">
   <button class="tab active" onclick="switchTab('data',0)">📋 Dáta</button>
-  <button class="tab" onclick="switchTab('run1',1)">🏃 Run 1</button>
-  <button class="tab" onclick="switchTab('run2',2)">🏃 Run 2</button>
-  <button class="tab" onclick="switchTab('ai',3)">🤖 AI</button>
-  <button class="tab" onclick="switchTab('summary',4)">📊 Výsledky</button>
+  <button class="tab" onclick="switchTab('run1',1)">👤 Run 1</button>
+  <button class="tab" onclick="switchTab('run2',2)">📄 Run 2</button>
+  <button class="tab" onclick="switchTab('run3',3)">💼 Run 3</button>
+  <button class="tab" onclick="switchTab('run4',4)">🎤 Run 4</button>
+  <button class="tab" onclick="switchTab('ai',5)">🤖 AI</button>
+  <button class="tab" onclick="switchTab('summary',6)">📊 Výsledky</button>
 </div>
 
-<!-- PANEL: DÁTA -->
+<!-- ═══ DÁTA ═══ -->
 <div id="panel-data" class="panel active">
   <div class="card">
-    <div class="card-title"><span class="dot"></span>Pozícia z profesia.sk</div>
-    <label>Názov pozície</label>
-    <div class="copy-wrap">
-      <input id="jobTitle" type="text" value="Senior Java Developer">
-      <button class="copy-btn" onclick="copyField('jobTitle')">kopírovať</button>
-    </div>
-    <label>Jazyk</label>
-    <select id="jobLang"><option>Slovenský</option><option>Český</option><option>Anglický</option></select>
-    <label>Popis práce</label>
-    <div class="copy-wrap">
-      <textarea id="jobDesc" rows="12">Hľadáme skúseného Senior Java Developera do nášho rastúceho tímu v oblasti Fintech.
-
-Náplň práce:
-• Dizajn, vývoj a údržba vysoko-výkonných Java aplikácií
-• Spolupráca so Scrum mastermi, architektmi a testovacími inžiniermi
-• Navrhovanie a implementácia nových funkcionalít a REST API
-• Code review a dodržiavanie štandardov kvality kódu (OWASP)
-• Unit testy, integračné a regresné testovanie
-• Monitoring a logovanie aplikácií v produkčnom prostredí
-
-Požiadavky:
-• Min. 5 rokov skúseností s Java (Spring Boot, Spring Framework)
-• Skúsenosti s REST API, PostgreSQL, databázovými optimalizáciami
-• Znalosť DevOps nástrojov – Docker, CI/CD, deployment
-• Práca s Git a agilnou metodikou (Scrum)
-• Angličtina na pokročilej úrovni (komunikácia s medzinárodným tímom)
-
-Výhodou:
-• Skúsenosti s high-volume API handling a message queues (Kafka)
-• Monitoring & observability (Grafana, Prometheus)
-• Práca v distribuovaných tímoch
-
-Ponúkame:
-• Plat 3 500 – 5 000 EUR/mesiac brutto
-• 100% remote alebo hybridný model (Bratislava)
-• Individuálny rozpočet na vzdelávanie a konferencie
-• Flexibilný pracovný čas
-• Moderné technológie a zaujímavé Fintech projekty</textarea>
-      <button class="copy-btn" onclick="copyField('jobDesc')">kopírovať</button>
+    <div class="card-title"><span class="dot"></span>Vygenerované testovacie dáta – Run #<span id="runNumDisplay">1</span></div>
+    <div class="data-box" id="dataBox">
+      <div><div class="data-key">Company Name</div><div class="data-val" id="d-company">CLAUDE-Alpha-Solutions</div></div>
+      <div><div class="data-key">VAT ID</div><div class="data-val" id="d-vat">SK2024001</div></div>
+      <div><div class="data-key">Billing Address</div><div class="data-val" id="d-address">Hlavná 12, Bratislava, SK</div></div>
+      <div><div class="data-key">User Email</div><div class="data-val" id="d-user">user.alpha.001@mailinator.com</div></div>
+      <div><div class="data-key">Branch Name</div><div class="data-val" id="d-branch">Bratislava Alpha HQ</div></div>
+      <div><div class="data-key">Pozícia</div><div class="data-val" id="d-position">Senior Java Developer</div></div>
+      <div><div class="data-key">Kandidát Email</div><div class="data-val" id="d-candidate">kandidat.alpha.001@mailinator.com</div></div>
+      <div><div class="data-key">Contract Type</div><div class="data-val" id="d-ctype">Prescreenings</div></div>
+      <div><div class="data-key">Screenings Total</div><div class="data-val" id="d-scr">50</div></div>
+      <div><div class="data-key">Valid From / To</div><div class="data-val" id="d-dates">03.03.2026 – 03.03.2027</div></div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-primary" onclick="generateWithAI()">
-        <span id="genSpinner" style="display:none" class="spinner"></span>
-        ✨ Vygenerovať nový popis cez AI
-      </button>
-      <button class="btn btn-secondary" onclick="document.getElementById('jobTitle').value='Senior Java Developer'">↺ Reset</button>
+      <button class="btn btn-primary" onclick="generateNewRun()">🎲 Nový run – nové dáta</button>
+      <button class="btn btn-secondary" onclick="copyAllData()">📋 Kopírovať všetko</button>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="dot"></span>Logo pobočky – vyber obrázok</div>
-    <p style="font-size:0.78rem;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px;">Klikni pravým na vybraný obrázok → "Uložiť obrázok ako..." → nahraj do Talentiqa ako logo pobočky</p>
+    <div class="card-title"><span class="dot"></span>Popis pozície (profesia.sk štýl)</div>
+    <div class="copy-wrap">
+      <textarea id="jobDesc" rows="13" placeholder="Klikni Vygenerovať..."></textarea>
+      <button class="copy-btn" onclick="copyField('jobDesc')">kopírovať</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="genBtn" onclick="generateJobDesc()">
+        <span id="genSpinner" style="display:none" class="spinner"></span>
+        ✨ Vygenerovať popis pozície
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>Logo – vyber a stiahni</div>
+    <p style="font-size:0.78rem;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:12px">Pravý klik → Uložiť obrázok ako... → nahraj do Talentiqa</p>
     <div class="logo-grid">
-      <div class="logo-opt selected" onclick="selectLogo(this)">
-        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=200&h=200&fit=crop" alt="Java code">
-        <div class="check">✓</div>
-      </div>
-      <div class="logo-opt" onclick="selectLogo(this)">
-        <img src="https://images.unsplash.com/photo-1555066931-4365d14431b9?w=200&h=200&fit=crop" alt="Programming">
-        <div class="check">✓</div>
-      </div>
-      <div class="logo-opt" onclick="selectLogo(this)">
-        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200&h=200&fit=crop" alt="Laptop">
-        <div class="check">✓</div>
-      </div>
-      <div class="logo-opt" onclick="selectLogo(this)">
-        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=200&h=200&fit=crop" alt="Tech office">
-        <div class="check">✓</div>
-      </div>
-      <div class="logo-opt" onclick="selectLogo(this)">
-        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=200&h=200&fit=crop" alt="Code screen">
-        <div class="check">✓</div>
-      </div>
+      <div class="logo-opt selected" onclick="selectLogo(this)"><img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=160&h=160&fit=crop"><div class="check">✓</div></div>
+      <div class="logo-opt" onclick="selectLogo(this)"><img src="https://images.unsplash.com/photo-1555066931-4365d14431b9?w=160&h=160&fit=crop"><div class="check">✓</div></div>
+      <div class="logo-opt" onclick="selectLogo(this)"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=160&h=160&fit=crop"><div class="check">✓</div></div>
+      <div class="logo-opt" onclick="selectLogo(this)"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=160&h=160&fit=crop"><div class="check">✓</div></div>
+      <div class="logo-opt" onclick="selectLogo(this)"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=160&h=160&fit=crop"><div class="check">✓</div></div>
+      <div class="logo-opt" onclick="selectLogo(this)"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=160&h=160&fit=crop"><div class="check">✓</div></div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-title"><span class="dot"></span>Prihlasovacie údaje</div>
     <div class="row2">
-      <div><label>Portal</label><input type="text" value="https://dev.portal-app.talentiqa.ai" readonly></div>
-      <div><label>Admin</label><input type="text" value="https://dev.admin.talentiqa.ai" readonly></div>
-      <div><label>Email</label>
-        <div class="copy-wrap">
-          <input id="loginEmail" type="text" value="matejlalik@gmail.com" readonly>
-          <button class="copy-btn" onclick="copyField('loginEmail')">kopírovať</button>
-        </div>
-      </div>
-      <div><label>Heslo</label>
-        <div class="copy-wrap">
-          <input id="loginPass" type="password" value="Lalenzo4564">
-          <button class="copy-btn" onclick="copyField('loginPass')">kopírovať</button>
-        </div>
-      </div>
+      <div><label>Admin URL</label><input value="https://dev.admin.talentiqa.ai" readonly></div>
+      <div><label>Portal URL</label><input value="https://dev.portal-app.talentiqa.ai" readonly></div>
+      <div><label>Email</label><div class="copy-wrap"><input id="loginEmail" value="matejlalik@gmail.com" readonly><button class="copy-btn" onclick="copyField('loginEmail')">kopírovať</button></div></div>
+      <div><label>Heslo</label><div class="copy-wrap"><input id="loginPass" type="password" value="Lalenzo4564"><button class="copy-btn" onclick="copyField('loginPass')">kopírovať</button></div></div>
     </div>
   </div>
 </div>
 
-<!-- PANEL: RUN 1 -->
+<!-- ═══ RUN 1 – CUSTOMER ═══ -->
 <div id="panel-run1" class="panel">
-  <div style="margin-bottom:20px;">
-    <div class="run-header"><span class="run-badge">Run 1</span><span class="run-title">Príprava pozície</span></div>
+  <div style="margin-bottom:20px">
+    <div class="run-header"><span class="run-badge" style="background:linear-gradient(135deg,#7c6af7,#a78bfa)">Run 1</span><span class="run-title">Založenie Customera – Admin</span></div>
     <div class="summary-grid">
-      <div class="summary-stat"><div class="val val-total" id="r1total">5</div><div class="lbl">Celkom</div></div>
+      <div class="summary-stat"><div class="val val-total">8</div><div class="lbl">Celkom</div></div>
       <div class="summary-stat"><div class="val val-pass" id="r1pass">0</div><div class="lbl">Pass ✓</div></div>
       <div class="summary-stat"><div class="val val-fail" id="r1fail">0</div><div class="lbl">Fail ✗</div></div>
       <div class="summary-stat"><div class="val val-skip" id="r1skip">0</div><div class="lbl">Skip →</div></div>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="r1progress" style="width:0%"></div></div>
+    <div class="progress-track"><div class="progress-fill" id="r1prog" style="width:0%"></div></div>
   </div>
 
+  <!-- SC1 -->
   <div class="scenario" id="sc1">
-    <div class="scenario-header" onclick="toggleScenario('sc1')">
-      <div class="scenario-left"><div class="scenario-num">1</div><div class="scenario-name">Vytvorenie pobočky s logom</div></div>
-      <div class="scenario-right"><span id="sc1-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    <div class="scenario-header" onclick="toggle('sc1')">
+      <div class="scenario-left"><div class="scenario-num">1</div><div class="scenario-name">Prihlásenie do Adminu</div></div>
+      <div class="scenario-right"><span id="sc1-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
     </div>
     <div class="scenario-body" id="sc1-body">
       <ol class="step-list">
-        <li>Prihlásiť sa na <strong>dev.portal-app.talentiqa.ai</strong></li>
-        <li>Kliknúť na <strong>Firemný účet</strong> v ľavom menu</li>
-        <li>Prejsť na záložku <strong>Pobočky</strong></li>
-        <li>Kliknúť na tlačidlo <strong>+ Nová pobočka</strong></li>
-        <li>Do poľa Meno zadať: <strong>Bratislava HQ</strong></li>
-        <li>Do poľa Popis zadať: <strong>Hlavná pobočka pre IT pozície</strong></li>
-        <li>Nahrať logo – obrázok vybraný v záložke Dáta</li>
-        <li>Kliknúť na <strong>Vytvoriť</strong></li>
+        <li>Otvoriť <strong>https://dev.admin.talentiqa.ai</strong></li>
+        <li>Email: <strong>matejlalik@gmail.com</strong></li>
+        <li>Heslo: <strong>Lalenzo4564</strong></li>
+        <li>Kliknúť <strong>Login</strong></li>
       </ol>
-      <div class="expected">Pobočka "Bratislava HQ" sa zobrazí v zozname pobočiek s logom</div>
+      <div class="expected">Dashboard s grafom Daily Prescreenings je zobrazený</div>
       <hr class="divider">
       <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc1','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc1','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc1','skip',this)">→ Skip</button>
+        <button class="status-btn" onclick="setS('sc1','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc1','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc1','skip',this)">→ Skip</button>
       </div>
-      <textarea id="sc1-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
+      <textarea id="sc1-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
     </div>
   </div>
 
+  <!-- SC2 -->
   <div class="scenario" id="sc2">
-    <div class="scenario-header" onclick="toggleScenario('sc2')">
-      <div class="scenario-left"><div class="scenario-num">2</div><div class="scenario-name">Vytvorenie novej pozície – formulár</div></div>
-      <div class="scenario-right"><span id="sc2-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    <div class="scenario-header" onclick="toggle('sc2')">
+      <div class="scenario-left"><div class="scenario-num">2</div><div class="scenario-name">New Customer – Basic Information</div></div>
+      <div class="scenario-right"><span id="sc2-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
     </div>
     <div class="scenario-body" id="sc2-body">
       <ol class="step-list">
-        <li>Kliknúť na <strong>Nábor</strong> v ľavom menu</li>
-        <li>Kliknúť na tlačidlo <strong>+ Nová pozícia</strong> (vpravo hore)</li>
-        <li>Z dropdownu Jazyk vybrať <strong>Slovenský</strong></li>
-        <li>Do poľa Názov práce zadať: <strong>Senior Java Developer</strong> (kopírovať z Dáta)</li>
-        <li>Do Popis práce vložiť popis z Tab Dáta (tlačidlo kopírovať)</li>
-        <li>Overiť že kontakt <strong>matejlalik@gmail.com</strong> je predvyplnený</li>
-        <li>Z dropdownu Pobočka vybrať <strong>Bratislava HQ</strong></li>
-        <li>Kliknúť na <strong>Uložiť a pokračovať</strong></li>
+        <li>Kliknúť <strong>Customers</strong> v ľavom menu</li>
+        <li>Kliknúť <strong>+ New customer</strong> vpravo hore</li>
+        <li>Country: <strong>SK</strong>, Language: <strong>SK</strong></li>
+        <li>Company Name: <strong class="dyn-company">CLAUDE-Alpha-Solutions</strong></li>
+        <li>VAT ID: <strong class="dyn-vat">SK2024001</strong></li>
+        <li>Billing Address: <strong class="dyn-address">Hlavná 12, Bratislava, SK</strong></li>
+        <li>About Company: <strong>Testovacia spoločnosť pre QA účely</strong></li>
+        <li>Logo: nahrať obrázok z Tab Dáta</li>
+        <li>Kliknúť <strong>Save Basic Information</strong></li>
       </ol>
-      <div class="expected">Systém presmeruje na záložku "Otázky na pohovor" a generuje otázky</div>
+      <div class="expected">Customer uložený, zobrazí sa Company Account so záložkami</div>
       <hr class="divider">
       <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc2','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc2','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc2','skip',this)">→ Skip</button>
+        <button class="status-btn" onclick="setS('sc2','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc2','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc2','skip',this)">→ Skip</button>
       </div>
-      <textarea id="sc2-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
+      <textarea id="sc2-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
     </div>
   </div>
 
+  <!-- SC3 -->
   <div class="scenario" id="sc3">
-    <div class="scenario-header" onclick="toggleScenario('sc3')">
-      <div class="scenario-left"><div class="scenario-num">3</div><div class="scenario-name">Správa otázok na pohovor</div></div>
-      <div class="scenario-right"><span id="sc3-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    <div class="scenario-header" onclick="toggle('sc3')">
+      <div class="scenario-left"><div class="scenario-num">3</div><div class="scenario-name">Documents – nahratie Privacy Policy PDF</div></div>
+      <div class="scenario-right"><span id="sc3-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
     </div>
     <div class="scenario-body" id="sc3-body">
       <ol class="step-list">
-        <li>Počkať kým AI dogeneruje otázky (spinner zmizne)</li>
-        <li>Kliknúť na <strong>Odstrániť otázky</strong> – potvrdiť</li>
-        <li>Overiť že zoznam otázok je prázdny</li>
-        <li>Kliknúť na <strong>Generovať nové otázky</strong></li>
-        <li>Počkať kým AI vygeneruje nové otázky</li>
-        <li>Kliknúť na ikonu ✏️ pri prvej otázke – upraviť text</li>
-        <li>Uložiť zmenu otázky</li>
-        <li>Kliknúť na <strong>Uložiť do šablóny</strong> – zadať názov</li>
-        <li>Kliknúť na <strong>Uložiť zmeny</strong></li>
+        <li>Prejsť na záložku <strong>Documents</strong></li>
+        <li>Kliknúť <strong>Select file</strong></li>
+        <li>Vybrať ľubovoľný PDF súbor</li>
+        <li>Kliknúť <strong>Otvoriť</strong></li>
+        <li>Kliknúť <strong>Upload</strong></li>
       </ol>
-      <div class="expected">Otázky uložené, šablóna sa objaví v "Šablóny otázok"</div>
+      <div class="expected">Súbor nahratý, zobrazí sa v zozname dokumentov</div>
       <hr class="divider">
       <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc3','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc3','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc3','skip',this)">→ Skip</button>
+        <button class="status-btn" onclick="setS('sc3','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc3','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc3','skip',this)">→ Skip</button>
       </div>
-      <textarea id="sc3-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
+      <textarea id="sc3-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
     </div>
   </div>
 
+  <!-- SC4 -->
   <div class="scenario" id="sc4">
-    <div class="scenario-header" onclick="toggleScenario('sc4')">
-      <div class="scenario-left"><div class="scenario-num">4</div><div class="scenario-name">Validácia – prázdne povinné polia</div></div>
-      <div class="scenario-right"><span id="sc4-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    <div class="scenario-header" onclick="toggle('sc4')">
+      <div class="scenario-left"><div class="scenario-num">4</div><div class="scenario-name">Users – pridanie nového používateľa</div></div>
+      <div class="scenario-right"><span id="sc4-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
     </div>
     <div class="scenario-body" id="sc4-body">
       <ol class="step-list">
-        <li>Otvoriť formulár Nová pozícia</li>
-        <li>Nechať pole <strong>Názov práce</strong> prázdne</li>
-        <li>Kliknúť na <strong>Uložiť a pokračovať</strong></li>
-        <li>Overiť zobrazenie chybovej hlášky</li>
-        <li>Vyplniť názov ale <strong>nevybrať Pobočku</strong></li>
-        <li>Kliknúť na <strong>Uložiť a pokračovať</strong></li>
-        <li>Overiť validáciu pre pobočku</li>
+        <li>Prejsť na záložku <strong>Users</strong></li>
+        <li>Kliknúť <strong>+ New user</strong></li>
+        <li>Email: <strong class="dyn-user">user.alpha.001@mailinator.com</strong></li>
+        <li>Role: nechať <strong>User</strong> alebo zmeniť</li>
+        <li>Kliknúť <strong>Create</strong></li>
       </ol>
-      <div class="expected">Systém zobrazí validačné chyby a nepostúpi na ďalší krok</div>
+      <div class="expected">Používateľ sa zobrazí v zozname Users</div>
       <hr class="divider">
       <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc4','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc4','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc4','skip',this)">→ Skip</button>
+        <button class="status-btn" onclick="setS('sc4','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc4','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc4','skip',this)">→ Skip</button>
       </div>
-      <textarea id="sc4-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
+      <textarea id="sc4-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
     </div>
   </div>
 
+  <!-- SC5 -->
   <div class="scenario" id="sc5">
-    <div class="scenario-header" onclick="toggleScenario('sc5')">
-      <div class="scenario-left"><div class="scenario-num">5</div><div class="scenario-name">Responzívny dizajn – mobilné rozlíšenie</div></div>
-      <div class="scenario-right"><span id="sc5-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    <div class="scenario-header" onclick="toggle('sc5')">
+      <div class="scenario-left"><div class="scenario-num">5</div><div class="scenario-name">Branches – vytvorenie pobočky s logom</div></div>
+      <div class="scenario-right"><span id="sc5-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
     </div>
     <div class="scenario-body" id="sc5-body">
       <ol class="step-list">
-        <li>Otvoriť DevTools (F12) v prehliadači</li>
-        <li>Prepnúť na mobilný pohľad (napr. iPhone 14)</li>
-        <li>Prejsť na stránku <strong>Nová pozícia</strong></li>
-        <li>Overiť či sú všetky polia správne zobrazené</li>
-        <li>Overiť či dropdown <strong>Jazyk</strong> funguje na mobile</li>
-        <li>Overiť viditeľnosť tlačidla <strong>Uložiť a pokračovať</strong></li>
-        <li>Overiť funkčnosť rich text editora (popis práce)</li>
-        <li>Skontrolovať absenciu horizontálneho scrollovania</li>
+        <li>Prejsť na záložku <strong>Branches</strong></li>
+        <li>Kliknúť <strong>+ New branch</strong></li>
+        <li>Name: <strong class="dyn-branch">Bratislava Alpha HQ</strong></li>
+        <li>Description: <strong>Hlavná pobočka pre IT pozície</strong></li>
+        <li>Logo: nahrať obrázok z Tab Dáta</li>
+        <li>Kliknúť <strong>Create</strong></li>
       </ol>
-      <div class="expected">Formulár je plne použiteľný na mobile bez horizontálneho scrollovania</div>
+      <div class="expected">Pobočka sa zobrazí v zozname Branches</div>
       <hr class="divider">
       <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc5','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc5','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc5','skip',this)">→ Skip</button>
+        <button class="status-btn" onclick="setS('sc5','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc5','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc5','skip',this)">→ Skip</button>
       </div>
-      <textarea id="sc5-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
+      <textarea id="sc5-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <!-- SC6 -->
+  <div class="scenario" id="sc6">
+    <div class="scenario-header" onclick="toggle('sc6')">
+      <div class="scenario-left"><div class="scenario-num">6</div><div class="scenario-name">Knowledge Base – upload 2+ dokumentov</div></div>
+      <div class="scenario-right"><span id="sc6-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc6-body">
+      <ol class="step-list">
+        <li>Prejsť na záložku <strong>Knowledge base</strong></li>
+        <li>Kliknúť <strong>+ Select Files</strong></li>
+        <li>Vybrať <strong>2 alebo viac</strong> PDF/dokumentov (Ctrl+klik)</li>
+        <li>Kliknúť <strong>Otvoriť</strong></li>
+        <li>Kliknúť <strong>Upload Files</strong></li>
+      </ol>
+      <div class="expected">Dokumenty sa zobrazia v "Uploaded documents"</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc6','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc6','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc6','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc6-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <!-- SC7 -->
+  <div class="scenario" id="sc7">
+    <div class="scenario-header" onclick="toggle('sc7')">
+      <div class="scenario-left"><div class="scenario-num">7</div><div class="scenario-name">AI Settings – zmena Model Bucket tieru</div></div>
+      <div class="scenario-right"><span id="sc7-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc7-body">
+      <ol class="step-list">
+        <li>Prejsť na záložku <strong>AI Settings</strong></li>
+        <li>Kliknúť na dropdown <strong>Model Bucket (AI Tier)</strong></li>
+        <li>Zmeniť na iný tier (nie Standard)</li>
+        <li>Uložiť zmenu</li>
+        <li>Overiť že tier sa zmenil</li>
+      </ol>
+      <div class="expected">Model Bucket je zmenený a uložený</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc7','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc7','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc7','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc7-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <!-- SC8 -->
+  <div class="scenario" id="sc8">
+    <div class="scenario-header" onclick="toggle('sc8')">
+      <div class="scenario-left"><div class="scenario-num">8</div><div class="scenario-name">Validácia – povinné polia Basic Info</div></div>
+      <div class="scenario-right"><span id="sc8-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc8-body">
+      <ol class="step-list">
+        <li>Otvoriť <strong>+ New customer</strong></li>
+        <li>Nechať <strong>Company Name</strong> prázdne → Save</li>
+        <li>Overiť chybovú hlášku</li>
+        <li>Nechať <strong>Billing Address</strong> prázdne → Save</li>
+        <li>Overiť chybovú hlášku pre adresu</li>
+      </ol>
+      <div class="expected">Systém zobrazí validačné chyby pre povinné polia</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc8','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc8','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc8','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc8-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
     </div>
   </div>
 </div>
 
-<!-- PANEL: RUN 2 -->
+<!-- ═══ RUN 2 – KONTRAKT ═══ -->
 <div id="panel-run2" class="panel">
-  <div style="margin-bottom:20px;">
-    <div class="run-header"><span class="run-badge" style="background:linear-gradient(135deg,var(--accent2),var(--yellow))">Run 2</span><span class="run-title">Kandidát & Pohovor</span></div>
+  <div style="margin-bottom:20px">
+    <div class="run-header"><span class="run-badge" style="background:linear-gradient(135deg,#f76a8a,#fb923c)">Run 2</span><span class="run-title">Vytvorenie Kontraktu – Admin</span></div>
     <div class="summary-grid">
-      <div class="summary-stat"><div class="val val-total" id="r2total">5</div><div class="lbl">Celkom</div></div>
+      <div class="summary-stat"><div class="val val-total">4</div><div class="lbl">Celkom</div></div>
       <div class="summary-stat"><div class="val val-pass" id="r2pass">0</div><div class="lbl">Pass ✓</div></div>
       <div class="summary-stat"><div class="val val-fail" id="r2fail">0</div><div class="lbl">Fail ✗</div></div>
       <div class="summary-stat"><div class="val val-skip" id="r2skip">0</div><div class="lbl">Skip →</div></div>
     </div>
-    <div class="progress-track"><div class="progress-fill" id="r2progress" style="width:0%;background:linear-gradient(90deg,var(--accent2),var(--yellow))"></div></div>
-  </div>
-
-  <div class="scenario" id="sc6">
-    <div class="scenario-header" onclick="toggleScenario('sc6')">
-      <div class="scenario-left"><div class="scenario-num">6</div><div class="scenario-name">Pozvanie kandidáta na pohovor</div></div>
-      <div class="scenario-right"><span id="sc6-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
-    </div>
-    <div class="scenario-body" id="sc6-body">
-      <ol class="step-list">
-        <li>Otvoriť pozíciu <strong>Senior Java Developer</strong> v Nábore</li>
-        <li>Kliknúť na záložku <strong>Kandidáti</strong></li>
-        <li>Kliknúť na tlačidlo <strong>+ Pozvať kandidáta</strong></li>
-        <li>Do poľa Email zadať: <strong>test.java.kandidat@mailinator.com</strong></li>
-        <li>Pole Telefónne číslo nechať prázdne</li>
-        <li>Kliknúť na <strong>Poslať pozvánku</strong></li>
-      </ol>
-      <div class="expected">Kandidát sa objaví v zozname so stavom "Pozvaný"</div>
-      <hr class="divider">
-      <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc6','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc6','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc6','skip',this)">→ Skip</button>
-      </div>
-      <textarea id="sc6-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
-    </div>
-  </div>
-
-  <div class="scenario" id="sc7">
-    <div class="scenario-header" onclick="toggleScenario('sc7')">
-      <div class="scenario-left"><div class="scenario-num">7</div><div class="scenario-name">Admin – nájdenie a otvorenie pohovoru</div></div>
-      <div class="scenario-right"><span id="sc7-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
-    </div>
-    <div class="scenario-body" id="sc7-body">
-      <ol class="step-list">
-        <li>Otvoriť: <strong>https://dev.admin.talentiqa.ai/comm</strong></li>
-        <li>Prihlásiť sa rovnakými údajmi</li>
-        <li>Ísť na Communication → <strong>Outbound Comm</strong></li>
-        <li>Vyhľadať príjemcu: <strong>test.java.kandidat@mailinator.com</strong></li>
-        <li>Nájsť riadok s typom EMAIL a aktuálnym dátumom</li>
-        <li>Kliknúť na <strong>View</strong> v stĺpci Detail</li>
-        <li>V emaily nájsť tlačidlo <strong>Začať</strong></li>
-        <li>Pravý klik na "Začať" → <strong>Otvoriť odkaz v novej karte</strong></li>
-      </ol>
-      <div class="expected">Otvorí sa stránka chat pohovoru na dev.chat.talentiqa.ai</div>
-      <hr class="divider">
-      <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc7','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc7','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc7','skip',this)">→ Skip</button>
-      </div>
-      <textarea id="sc7-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
-    </div>
-  </div>
-
-  <div class="scenario" id="sc8">
-    <div class="scenario-header" onclick="toggleScenario('sc8')">
-      <div class="scenario-left"><div class="scenario-num">8</div><div class="scenario-name">Absolvovanie chat pohovoru</div></div>
-      <div class="scenario-right"><span id="sc8-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
-    </div>
-    <div class="scenario-body" id="sc8-body">
-      <ol class="step-list">
-        <li>Prečítať popis pozície, scrollovať nadol</li>
-        <li>Kliknúť na <strong>Pokračovať</strong></li>
-        <li>Kliknúť na <strong>Ano, chci začít</strong></li>
-        <li>Odpovedať na každú otázku (vybrať možnosť / napísať)</li>
-        <li>Po zodpovedaní všetkých – kliknúť <strong>Položiť otázku</strong></li>
-        <li>Otázka 1: <strong>Aká je tímová kultúra?</strong></li>
-        <li>Otázka 2: <strong>Aké sú možnosti kariérneho rastu?</strong></li>
-        <li>Otázka 3: <strong>Aké nové technológie plánujete zaviesť?</strong></li>
-        <li>Kliknúť na <strong>Hotovo</strong> – dokončiť pohovor</li>
-      </ol>
-      <div class="expected">Pohovor je dokončený, zobrazí sa potvrdzujúca obrazovka</div>
-      <hr class="divider">
-      <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc8','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc8','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc8','skip',this)">→ Skip</button>
-      </div>
-      <textarea id="sc8-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
-    </div>
+    <div class="progress-track"><div class="progress-fill" id="r2prog" style="width:0%;background:linear-gradient(90deg,#f76a8a,#fb923c)"></div></div>
   </div>
 
   <div class="scenario" id="sc9">
-    <div class="scenario-header" onclick="toggleScenario('sc9')">
-      <div class="scenario-left"><div class="scenario-num">9</div><div class="scenario-name">Overenie výsledkov v portáli</div></div>
-      <div class="scenario-right"><span id="sc9-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    <div class="scenario-header" onclick="toggle('sc9')">
+      <div class="scenario-left"><div class="scenario-num">9</div><div class="scenario-name">Výber firmy a otvorenie Contract management</div></div>
+      <div class="scenario-right"><span id="sc9-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
     </div>
     <div class="scenario-body" id="sc9-body">
       <ol class="step-list">
-        <li>Vrátiť sa na dev.portal-app.talentiqa.ai</li>
-        <li>Otvoriť pozíciu → záložka <strong>Kandidáti</strong></li>
-        <li>Overiť stav kandidáta: <strong>Dokončený</strong></li>
-        <li>Kliknúť na kandidáta – zobraziť detaily</li>
-        <li>Overiť zobrazenie odpovedí na otázky</li>
-        <li>Overiť zobrazenie <strong>AI skóre</strong> kandidáta</li>
-        <li>Overiť dátum a čas dokončenia</li>
+        <li>Hore vľavo kliknúť na dropdown <strong>All customers</strong></li>
+        <li>Vyhľadať a vybrať <strong class="dyn-company">CLAUDE-Alpha-Solutions</strong></li>
+        <li>V ľavom menu sa zobrazí <strong>Contracts</strong></li>
+        <li>Kliknúť na <strong>Contracts</strong></li>
+        <li>Overiť stránku <strong>Contract management</strong></li>
       </ol>
-      <div class="expected">Kandidát má stav "Dokončený", zobrazené sú odpovede aj AI skóre</div>
+      <div class="expected">Stránka Contract management zobrazená s "No contracts found"</div>
       <hr class="divider">
       <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc9','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc9','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc9','skip',this)">→ Skip</button>
+        <button class="status-btn" onclick="setS('sc9','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc9','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc9','skip',this)">→ Skip</button>
       </div>
-      <textarea id="sc9-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
+      <textarea id="sc9-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
     </div>
   </div>
 
   <div class="scenario" id="sc10">
-    <div class="scenario-header" onclick="toggleScenario('sc10')">
-      <div class="scenario-left"><div class="scenario-num">10</div><div class="scenario-name">Validácia – pozvanie bez/neplatný email</div></div>
-      <div class="scenario-right"><span id="sc10-badge" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    <div class="scenario-header" onclick="toggle('sc10')">
+      <div class="scenario-left"><div class="scenario-num">10</div><div class="scenario-name">New contract – Prescreenings typ</div></div>
+      <div class="scenario-right"><span id="sc10-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
     </div>
     <div class="scenario-body" id="sc10-body">
       <ol class="step-list">
-        <li>Kliknúť na <strong>+ Pozvať kandidáta</strong></li>
-        <li>Nechať Email prázdne – kliknúť <strong>Poslať pozvánku</strong></li>
-        <li>Overiť chybovú hlášku pri prázdnom emaili</li>
-        <li>Zadať neplatný email: <strong>nieje-email</strong></li>
-        <li>Kliknúť na <strong>Poslať pozvánku</strong></li>
-        <li>Overiť chybu pre neplatný formát emailu</li>
+        <li>Kliknúť <strong>+ New contract</strong></li>
+        <li>Toggle <strong>Valid</strong> zapnúť</li>
+        <li>Type: <strong>Prescreenings</strong></li>
+        <li>Valid from: <strong class="dyn-datefrom">03.03.2026</strong></li>
+        <li>Valid to: <strong class="dyn-dateto">03.03.2027</strong></li>
+        <li>Screenings total: <strong class="dyn-scr">50</strong></li>
+        <li>Screenings left: <strong class="dyn-scr">50</strong> (rovnaké číslo)</li>
+        <li>Kliknúť <strong>Create</strong></li>
       </ol>
-      <div class="expected">Systém zobrazí validačné chyby, formulár sa neodošle</div>
+      <div class="expected">Kontrakt v zozname ako Valid, zobrazené ScreeningsTotal/Left</div>
       <hr class="divider">
       <div class="status-row">
-        <button class="status-btn" onclick="setStatus('sc10','pass',this)">✓ Pass</button>
-        <button class="status-btn" onclick="setStatus('sc10','fail',this)">✗ Fail</button>
-        <button class="status-btn" onclick="setStatus('sc10','skip',this)">→ Skip</button>
+        <button class="status-btn" onclick="setS('sc10','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc10','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc10','skip',this)">→ Skip</button>
       </div>
-      <textarea id="sc10-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:55px;"></textarea>
+      <textarea id="sc10-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc11">
+    <div class="scenario-header" onclick="toggle('sc11')">
+      <div class="scenario-left"><div class="scenario-num">11</div><div class="scenario-name">New contract – AI Credits typ</div></div>
+      <div class="scenario-right"><span id="sc11-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc11-body">
+      <ol class="step-list">
+        <li>Kliknúť <strong>+ New contract</strong></li>
+        <li>Type: <strong>AI Credits</strong></li>
+        <li>Valid from / to: ľubovoľné dátumy</li>
+        <li>Credits total: <strong>100</strong></li>
+        <li>Credits left: <strong>100</strong></li>
+        <li>Kliknúť <strong>Create</strong></li>
+        <li>Overiť stĺpce CreditsTotal a CreditsLeft v zozname</li>
+      </ol>
+      <div class="expected">AI Credits kontrakt vytvorený, Credits stĺpce viditeľné</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc11','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc11','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc11','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc11-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc12">
+    <div class="scenario-header" onclick="toggle('sc12')">
+      <div class="scenario-left"><div class="scenario-num">12</div><div class="scenario-name">Prechod na Portál – New position</div></div>
+      <div class="scenario-right"><span id="sc12-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc12-body">
+      <ol class="step-list">
+        <li>V ľavom menu kliknúť <strong>Customers</strong></li>
+        <li>Nájsť firmu <strong class="dyn-company">CLAUDE-Alpha-Solutions</strong></li>
+        <li>V Actions kliknúť <strong>New position</strong></li>
+        <li>Overiť že sa otvorí <strong>Portál</strong> s formulárom</li>
+      </ol>
+      <div class="expected">Portál otvorený na stránke vytvorenia novej pozície</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc12','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc12','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc12','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc12-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
     </div>
   </div>
 </div>
 
-<!-- PANEL: AI -->
+<!-- ═══ RUN 3 – POZÍCIA ═══ -->
+<div id="panel-run3" class="panel">
+  <div style="margin-bottom:20px">
+    <div class="run-header"><span class="run-badge" style="background:linear-gradient(135deg,#4ade80,#06b6d4)">Run 3</span><span class="run-title">Vytvorenie Pozície – Portál</span></div>
+    <div class="summary-grid">
+      <div class="summary-stat"><div class="val val-total">5</div><div class="lbl">Celkom</div></div>
+      <div class="summary-stat"><div class="val val-pass" id="r3pass">0</div><div class="lbl">Pass ✓</div></div>
+      <div class="summary-stat"><div class="val val-fail" id="r3fail">0</div><div class="lbl">Fail ✗</div></div>
+      <div class="summary-stat"><div class="val val-skip" id="r3skip">0</div><div class="lbl">Skip →</div></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="r3prog" style="width:0%;background:linear-gradient(90deg,#4ade80,#06b6d4)"></div></div>
+  </div>
+
+  <div class="scenario" id="sc13">
+    <div class="scenario-header" onclick="toggle('sc13')">
+      <div class="scenario-left"><div class="scenario-num">13</div><div class="scenario-name">Vyplnenie formulára novej pozície</div></div>
+      <div class="scenario-right"><span id="sc13-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc13-body">
+      <ol class="step-list">
+        <li>Jazyk: vybrať <strong>Slovenský</strong></li>
+        <li>Názov práce: <strong class="dyn-position">Senior Java Developer</strong></li>
+        <li>Popis práce: vložiť z Tab Dáta (tlačidlo kopírovať)</li>
+        <li>Kontakt: overiť predvyplnený email</li>
+        <li>Pobočka: vybrať <strong class="dyn-branch">Bratislava Alpha HQ</strong></li>
+        <li>Kliknúť <strong>Uložiť a pokračovať</strong></li>
+      </ol>
+      <div class="expected">Presmerovanie na "Otázky na pohovor", AI generuje otázky</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc13','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc13','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc13','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc13-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc14">
+    <div class="scenario-header" onclick="toggle('sc14')">
+      <div class="scenario-left"><div class="scenario-num">14</div><div class="scenario-name">Správa otázok na pohovor</div></div>
+      <div class="scenario-right"><span id="sc14-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc14-body">
+      <ol class="step-list">
+        <li>Počkať kým AI dogeneruje otázky</li>
+        <li>Kliknúť <strong>Odstrániť otázky</strong> → potvrdiť</li>
+        <li>Overiť prázdny zoznam</li>
+        <li>Kliknúť <strong>Generovať nové otázky</strong></li>
+        <li>Počkať na nové otázky</li>
+        <li>Kliknúť ✏️ pri prvej otázke → upraviť → uložiť</li>
+        <li>Kliknúť <strong>Uložiť do šablóny</strong> → zadať názov</li>
+        <li>Kliknúť <strong>Uložiť zmeny</strong></li>
+      </ol>
+      <div class="expected">Otázky uložené, šablóna dostupná v Šablóny otázok</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc14','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc14','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc14','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc14-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc15">
+    <div class="scenario-header" onclick="toggle('sc15')">
+      <div class="scenario-left"><div class="scenario-num">15</div><div class="scenario-name">Pozvanie kandidáta</div></div>
+      <div class="scenario-right"><span id="sc15-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc15-body">
+      <ol class="step-list">
+        <li>Prejsť na záložku <strong>Kandidáti</strong></li>
+        <li>Kliknúť <strong>+ Pozvať kandidáta</strong></li>
+        <li>Email: <strong class="dyn-candidate">kandidat.alpha.001@mailinator.com</strong></li>
+        <li>Telefón: nechať prázdne</li>
+        <li>Kliknúť <strong>Poslať pozvánku</strong></li>
+      </ol>
+      <div class="expected">Kandidát v zozname so stavom "Pozvaný"</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc15','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc15','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc15','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc15-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc16">
+    <div class="scenario-header" onclick="toggle('sc16')">
+      <div class="scenario-left"><div class="scenario-num">16</div><div class="scenario-name">Validácia – prázdne polia formulára pozície</div></div>
+      <div class="scenario-right"><span id="sc16-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc16-body">
+      <ol class="step-list">
+        <li>Otvoriť <strong>Nová pozícia</strong> znova</li>
+        <li>Nechať <strong>Názov práce</strong> prázdne → Uložiť</li>
+        <li>Overiť validačnú chybu</li>
+        <li>Vyplniť názov ale <strong>nevybrať Pobočku</strong> → Uložiť</li>
+        <li>Overiť validáciu pobočky</li>
+      </ol>
+      <div class="expected">Systém zobrazí chyby, nepokračuje ďalej</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc16','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc16','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc16','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc16-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc17">
+    <div class="scenario-header" onclick="toggle('sc17')">
+      <div class="scenario-left"><div class="scenario-num">17</div><div class="scenario-name">Responzívny dizajn – formulár na mobile</div></div>
+      <div class="scenario-right"><span id="sc17-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc17-body">
+      <ol class="step-list">
+        <li>Otvoriť DevTools (F12)</li>
+        <li>Prepnúť na mobilné rozlíšenie (iPhone 14)</li>
+        <li>Otvoriť <strong>Nová pozícia</strong></li>
+        <li>Overiť všetky polia a dropdowny</li>
+        <li>Overiť absenciu horizontálneho scrollovania</li>
+        <li>Overiť funkčnosť rich text editora</li>
+      </ol>
+      <div class="expected">Formulár plne použiteľný na mobile</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc17','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc17','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc17','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc17-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RUN 4 – POHOVOR ═══ -->
+<div id="panel-run4" class="panel">
+  <div style="margin-bottom:20px">
+    <div class="run-header"><span class="run-badge" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">Run 4</span><span class="run-title">Chat Pohovor – Admin + Chat</span></div>
+    <div class="summary-grid">
+      <div class="summary-stat"><div class="val val-total">5</div><div class="lbl">Celkom</div></div>
+      <div class="summary-stat"><div class="val val-pass" id="r4pass">0</div><div class="lbl">Pass ✓</div></div>
+      <div class="summary-stat"><div class="val val-fail" id="r4fail">0</div><div class="lbl">Fail ✗</div></div>
+      <div class="summary-stat"><div class="val val-skip" id="r4skip">0</div><div class="lbl">Skip →</div></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="r4prog" style="width:0%;background:linear-gradient(90deg,#fbbf24,#f59e0b)"></div></div>
+  </div>
+
+  <div class="scenario" id="sc18">
+    <div class="scenario-header" onclick="toggle('sc18')">
+      <div class="scenario-left"><div class="scenario-num">18</div><div class="scenario-name">Admin – nájdenie emailu a otvorenie pohovoru</div></div>
+      <div class="scenario-right"><span id="sc18-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc18-body">
+      <ol class="step-list">
+        <li>Otvoriť <strong>https://dev.admin.talentiqa.ai/comm</strong></li>
+        <li>Ísť na Communication → <strong>Outbound Comm</strong></li>
+        <li>Vyhľadať príjemcu: <strong class="dyn-candidate">kandidat.alpha.001@mailinator.com</strong></li>
+        <li>Nájsť riadok typ <strong>EMAIL</strong> s dnešným dátumom</li>
+        <li>Kliknúť <strong>View</strong></li>
+        <li>Nájsť tlačidlo <strong>Začať</strong> v emaily</li>
+        <li>Pravý klik → <strong>Otvoriť odkaz v novej karte</strong></li>
+      </ol>
+      <div class="expected">Otvorí sa chat pohovor na dev.chat.talentiqa.ai</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc18','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc18','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc18','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc18-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc19">
+    <div class="scenario-header" onclick="toggle('sc19')">
+      <div class="scenario-left"><div class="scenario-num">19</div><div class="scenario-name">Absolvovanie chat pohovoru</div></div>
+      <div class="scenario-right"><span id="sc19-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc19-body">
+      <ol class="step-list">
+        <li>Prečítať popis pozície, scrollovať nadol</li>
+        <li>Kliknúť <strong>Pokračovať</strong></li>
+        <li>Kliknúť <strong>Ano, chci začít</strong></li>
+        <li>Odpovedať na každú otázku</li>
+        <li>Kliknúť <strong>Položiť otázku</strong></li>
+        <li>Otázka 1: <strong>Aká je tímová kultúra?</strong></li>
+        <li>Otázka 2: <strong>Aké sú možnosti kariérneho rastu?</strong></li>
+        <li>Otázka 3: <strong>Aké technológie plánujete zaviesť?</strong></li>
+        <li>Kliknúť <strong>Hotovo</strong></li>
+      </ol>
+      <div class="expected">Pohovor dokončený, zobrazí sa potvrdzujúca obrazovka</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc19','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc19','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc19','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc19-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc20">
+    <div class="scenario-header" onclick="toggle('sc20')">
+      <div class="scenario-left"><div class="scenario-num">20</div><div class="scenario-name">Overenie výsledkov a AI skóre v Portáli</div></div>
+      <div class="scenario-right"><span id="sc20-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc20-body">
+      <ol class="step-list">
+        <li>Vrátiť sa na <strong>dev.portal-app.talentiqa.ai</strong></li>
+        <li>Otvoriť pozíciu → záložka <strong>Kandidáti</strong></li>
+        <li>Overiť stav: <strong>Dokončený</strong></li>
+        <li>Kliknúť na kandidáta → detaily</li>
+        <li>Overiť zobrazenie odpovedí</li>
+        <li>Overiť <strong>AI skóre</strong></li>
+      </ol>
+      <div class="expected">Stav Dokončený, odpovede a AI skóre zobrazené</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc20','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc20','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc20','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc20-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc21">
+    <div class="scenario-header" onclick="toggle('sc21')">
+      <div class="scenario-left"><div class="scenario-num">21</div><div class="scenario-name">Validácia – pozvanie kandidáta bez emailu</div></div>
+      <div class="scenario-right"><span id="sc21-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc21-body">
+      <ol class="step-list">
+        <li>Kliknúť <strong>+ Pozvať kandidáta</strong></li>
+        <li>Email prázdne → <strong>Poslať pozvánku</strong></li>
+        <li>Overiť chybovú hlášku</li>
+        <li>Zadať neplatný email: <strong>nieje-email</strong></li>
+        <li>Kliknúť <strong>Poslať pozvánku</strong></li>
+        <li>Overiť chybu formátu</li>
+      </ol>
+      <div class="expected">Validačné chyby zobrazené, formulár sa neodošle</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc21','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc21','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc21','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc21-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+
+  <div class="scenario" id="sc22">
+    <div class="scenario-header" onclick="toggle('sc22')">
+      <div class="scenario-left"><div class="scenario-num">22</div><div class="scenario-name">Overenie zníženia ScreeningsLeft po pohovore</div></div>
+      <div class="scenario-right"><span id="sc22-b" class="badge badge-purple">čaká</span><span style="color:var(--muted)">▾</span></div>
+    </div>
+    <div class="scenario-body" id="sc22-body">
+      <ol class="step-list">
+        <li>Vrátiť sa do Adminu → <strong>Contracts</strong></li>
+        <li>Otvoriť kontrakt firmy <strong class="dyn-company">CLAUDE-Alpha-Solutions</strong></li>
+        <li>Overiť že <strong>ScreeningsLeft</strong> sa znížilo o 1</li>
+        <li>Pôvodná hodnota: <strong class="dyn-scr">50</strong> → aktuálna má byť <strong class="dyn-scr-minus">49</strong></li>
+      </ol>
+      <div class="expected">ScreeningsLeft = pôvodné číslo mínus 1</div>
+      <hr class="divider">
+      <div class="status-row">
+        <button class="status-btn" onclick="setS('sc22','pass',this)">✓ Pass</button>
+        <button class="status-btn" onclick="setS('sc22','fail',this)">✗ Fail</button>
+        <button class="status-btn" onclick="setS('sc22','skip',this)">→ Skip</button>
+      </div>
+      <textarea id="sc22-note" placeholder="Poznámka / bug..." style="margin-top:10px;min-height:50px"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AI ═══ -->
 <div id="panel-ai" class="panel">
   <div class="card">
     <div class="card-title"><span class="dot"></span>AI Test Asistent</div>
     <div class="ai-messages" id="aiMessages">
       <div class="msg msg-ai">
         <div class="msg-avatar">🤖</div>
-        <div class="msg-bubble">Ahoj Matej! Pomôžem ti s testovaním Talentiqa. Opýtaj sa napríklad: "Vygeneruj edge case testy", "Čo robiť ak generovanie otázok zlyháva?", alebo "Ako otestovať responzívnosť?"</div>
+        <div class="msg-bubble">Ahoj Matej! Pomôžem ti s testovaním Talentiqa. Opýtaj sa napríklad: "Vygeneruj edge cases pre kontrakt", "Čo môže zlyhať pri Knowledge Base uploade?", alebo "Ako otestovať AI skóre kandidáta?"</div>
       </div>
     </div>
     <div class="ai-input-row">
@@ -566,32 +813,35 @@ Ponúkame:
       <button class="btn btn-primary" onclick="sendAI()" id="aiSendBtn">Poslať</button>
     </div>
     <hr class="divider">
-    <div style="display:flex;flex-wrap:wrap;gap:8px;">
-      <button class="btn btn-secondary" style="font-size:0.73rem;padding:6px 11px;" onclick="quickAsk('Vygeneruj 3 edge case testy pre formulár Nová pozícia v Talentiqa')">Edge cases</button>
-      <button class="btn btn-secondary" style="font-size:0.73rem;padding:6px 11px;" onclick="quickAsk('Ako otestovať AI generovanie otázok na pohovor v recruitment aplikácii?')">AI otázky</button>
-      <button class="btn btn-secondary" style="font-size:0.73rem;padding:6px 11px;" onclick="quickAsk('Aké sú typické bugy v HR recruitment webových aplikáciách?')">Typické bugy</button>
-      <button class="btn btn-secondary" style="font-size:0.73rem;padding:6px 11px;" onclick="quickAsk('Vygeneruj šablónu bug reportu pre Talentiqa aplikáciu')">Bug report</button>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <button class="btn btn-secondary" style="font-size:0.72rem;padding:6px 11px" onclick="quickAsk('Vygeneruj 3 edge case testy pre Contract management v Talentiqa')">Edge cases kontrakt</button>
+      <button class="btn btn-secondary" style="font-size:0.72rem;padding:6px 11px" onclick="quickAsk('Aké sú typické bugy pri nahrávání dokumentov do Knowledge Base?')">Knowledge Base bugy</button>
+      <button class="btn btn-secondary" style="font-size:0.72rem;padding:6px 11px" onclick="quickAsk('Ako otestovať AI generovanie otázok na pohovor v Talentiqa?')">Testovanie AI otázok</button>
+      <button class="btn btn-secondary" style="font-size:0.72rem;padding:6px 11px" onclick="quickAsk('Vygeneruj šablónu bug reportu pre Talentiqa HR aplikáciu')">Bug report šablóna</button>
     </div>
   </div>
 </div>
 
-<!-- PANEL: VÝSLEDKY -->
+<!-- ═══ VÝSLEDKY ═══ -->
 <div id="panel-summary" class="panel">
   <div class="card">
-    <div class="card-title"><span class="dot"></span>Celkové výsledky</div>
-    <div class="summary-grid" style="margin-bottom:16px;">
-      <div class="summary-stat"><div class="val val-total">10</div><div class="lbl">Celkom</div></div>
-      <div class="summary-stat"><div class="val val-pass" id="totalPass">0</div><div class="lbl">Passed</div></div>
-      <div class="summary-stat"><div class="val val-fail" id="totalFail">0</div><div class="lbl">Failed</div></div>
-      <div class="summary-stat"><div class="val val-skip" id="totalSkip">0</div><div class="lbl">Skipped</div></div>
+    <div class="card-title"><span class="dot"></span>Celkové výsledky – Run #<span id="sumRunNum">1</span></div>
+    <div class="summary-grid" style="margin-bottom:16px">
+      <div class="summary-stat"><div class="val val-total">22</div><div class="lbl">Celkom</div></div>
+      <div class="summary-stat"><div class="val val-pass" id="totalPass">0</div><div class="lbl">Passed ✓</div></div>
+      <div class="summary-stat"><div class="val val-fail" id="totalFail">0</div><div class="lbl">Failed ✗</div></div>
+      <div class="summary-stat"><div class="val val-skip" id="totalSkip">0</div><div class="lbl">Skipped →</div></div>
     </div>
-    <div class="progress-track" style="height:6px;margin-bottom:20px;"><div class="progress-fill" id="totalProgress" style="width:0%"></div></div>
-    <div id="summaryList" style="display:flex;flex-direction:column;gap:7px;margin-bottom:20px;"></div>
+    <div class="progress-track" style="height:6px;margin-bottom:20px"><div class="progress-fill" id="totalProg" style="width:0%"></div></div>
+    <div id="summaryList" style="display:flex;flex-direction:column;gap:7px;margin-bottom:20px"></div>
     <div class="btn-row">
-      <button class="btn btn-primary" onclick="generateReport()">📄 AI Report</button>
+      <button class="btn btn-primary" onclick="generateReport()" id="reportBtn">
+        <span id="reportSpinner" style="display:none" class="spinner"></span>
+        📄 Vygenerovať AI Report
+      </button>
       <button class="btn btn-secondary" onclick="exportResults()">💾 Export .txt</button>
     </div>
-    <div id="reportOutput" style="display:none;margin-top:16px;">
+    <div id="reportOutput" style="display:none;margin-top:16px">
       <div class="copy-wrap">
         <div class="result-box" id="reportText"></div>
         <button class="copy-btn" onclick="copyEl('reportText')">kopírovať</button>
@@ -601,184 +851,201 @@ Ponúkame:
 </div>
 
 <script>
-const statuses = {};
-const scenarioNames = {
-  sc1:'Vytvorenie pobočky s logom', sc2:'Vytvorenie novej pozície – formulár',
-  sc3:'Správa otázok na pohovor', sc4:'Validácia – prázdne polia',
-  sc5:'Responzívny dizajn', sc6:'Pozvanie kandidáta',
-  sc7:'Admin – otvorenie pohovoru', sc8:'Absolvovanie chat pohovoru',
-  sc9:'Overenie výsledkov', sc10:'Validácia – neplatný email'
-};
-const run1Ids = ['sc1','sc2','sc3','sc4','sc5'];
-const run2Ids = ['sc6','sc7','sc8','sc9','sc10'];
+// ── DATA ──
+const COMPANIES=['Alpha-Solutions','Beta-Tech','Gamma-Digital','Delta-Labs','Epsilon-Dev','Zeta-Systems','Eta-Software','Theta-Corp','Iota-Cloud','Kappa-AI'];
+const POSITIONS=['Senior Java Developer','Full Stack Engineer','DevOps Architect','Backend Python Developer','React Frontend Developer','Data Engineer','Cloud Solutions Architect','QA Automation Engineer','Mobile Developer','ML Engineer'];
+const CITIES=['Bratislava','Košice','Žilina','Prešov','Nitra','Banská Bystrica','Trnava','Trenčín'];
+const STREETS=['Hlavná','Námestie SNP','Obchodná','Mlynská','Štefánikova','Radlinského','Kollárova'];
 
-function switchTab(name, idx) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===idx));
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+let D={company:'CLAUDE-Alpha-Solutions',vat:'SK2024001',address:'Hlavná 12, Bratislava, SK',user:'user.alpha.001@mailinator.com',branch:'Bratislava Alpha HQ',position:'Senior Java Developer',candidate:'kandidat.alpha.001@mailinator.com',ctype:'Prescreenings',scr:50,datefrom:'03.03.2026',dateto:'03.03.2027',runNum:1};
+
+function generateNewRun(){
+  const c=COMPANIES[Math.floor(Math.random()*COMPANIES.length)];
+  const city=CITIES[Math.floor(Math.random()*CITIES.length)];
+  const pos=POSITIONS[Math.floor(Math.random()*POSITIONS.length)];
+  const ct=Math.random()>0.5?'Prescreenings':'AI Credits';
+  const scr=[10,20,25,50,100][Math.floor(Math.random()*5)];
+  const slug=c.split('-')[0].toLowerCase();
+  const num=String(Math.floor(Math.random()*999)+1).padStart(3,'0');
+  const street=STREETS[Math.floor(Math.random()*STREETS.length)];
+  const now=new Date();
+  const from=`${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}.${now.getFullYear()}`;
+  const to=`${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}.${now.getFullYear()+1}`;
+  D={company:'CLAUDE-'+c,vat:'SK'+Math.floor(Math.random()*9000000+1000000),address:street+' '+Math.floor(Math.random()*99+1)+', '+city+', SK',user:'user.'+slug+'.'+num+'@mailinator.com',branch:city+' '+c.split('-')[0]+' HQ',position:pos,candidate:'kandidat.'+slug+'.'+num+'@mailinator.com',ctype:ct,scr,datefrom:from,dateto:to,runNum:D.runNum+1};
+  updateUI();
+  generateJobDesc();
+}
+
+function updateUI(){
+  document.getElementById('runNumDisplay').textContent=D.runNum;
+  document.getElementById('sumRunNum').textContent=D.runNum;
+  document.getElementById('d-company').textContent=D.company;
+  document.getElementById('d-vat').textContent=D.vat;
+  document.getElementById('d-address').textContent=D.address;
+  document.getElementById('d-user').textContent=D.user;
+  document.getElementById('d-branch').textContent=D.branch;
+  document.getElementById('d-position').textContent=D.position;
+  document.getElementById('d-candidate').textContent=D.candidate;
+  document.getElementById('d-ctype').textContent=D.ctype;
+  document.getElementById('d-scr').textContent=D.scr;
+  document.getElementById('d-dates').textContent=D.datefrom+' – '+D.dateto;
+  document.querySelectorAll('.dyn-company').forEach(e=>e.textContent=D.company);
+  document.querySelectorAll('.dyn-vat').forEach(e=>e.textContent=D.vat);
+  document.querySelectorAll('.dyn-address').forEach(e=>e.textContent=D.address);
+  document.querySelectorAll('.dyn-user').forEach(e=>e.textContent=D.user);
+  document.querySelectorAll('.dyn-branch').forEach(e=>e.textContent=D.branch);
+  document.querySelectorAll('.dyn-position').forEach(e=>e.textContent=D.position);
+  document.querySelectorAll('.dyn-candidate').forEach(e=>e.textContent=D.candidate);
+  document.querySelectorAll('.dyn-scr').forEach(e=>e.textContent=D.scr);
+  document.querySelectorAll('.dyn-scr-minus').forEach(e=>e.textContent=D.scr-1);
+  document.querySelectorAll('.dyn-datefrom').forEach(e=>e.textContent=D.datefrom);
+  document.querySelectorAll('.dyn-dateto').forEach(e=>e.textContent=D.dateto);
+}
+
+// ── STATUSES ──
+const ST={};
+const ALL_IDS=['sc1','sc2','sc3','sc4','sc5','sc6','sc7','sc8','sc9','sc10','sc11','sc12','sc13','sc14','sc15','sc16','sc17','sc18','sc19','sc20','sc21','sc22'];
+const SC_NAMES={sc1:'Prihlásenie do Adminu',sc2:'New Customer – Basic Info',sc3:'Documents – Privacy Policy PDF',sc4:'Users – nový používateľ',sc5:'Branches – pobočka s logom',sc6:'Knowledge Base – upload dokumentov',sc7:'AI Settings – Model Bucket',sc8:'Validácia – povinné polia',sc9:'Výber firmy – Contract management',sc10:'New contract – Prescreenings',sc11:'New contract – AI Credits',sc12:'Prechod na Portál',sc13:'Formulár novej pozície',sc14:'Správa otázok na pohovor',sc15:'Pozvanie kandidáta',sc16:'Validácia formulára pozície',sc17:'Responzívny dizajn',sc18:'Admin – email a otvorenie pohovoru',sc19:'Absolvovanie chat pohovoru',sc20:'Overenie výsledkov a AI skóre',sc21:'Validácia – pozvanie kandidáta',sc22:'Screenings po pohovore'};
+const RUN_MAP={sc1:'Run 1',sc2:'Run 1',sc3:'Run 1',sc4:'Run 1',sc5:'Run 1',sc6:'Run 1',sc7:'Run 1',sc8:'Run 1',sc9:'Run 2',sc10:'Run 2',sc11:'Run 2',sc12:'Run 2',sc13:'Run 3',sc14:'Run 3',sc15:'Run 3',sc16:'Run 3',sc17:'Run 3',sc18:'Run 4',sc19:'Run 4',sc20:'Run 4',sc21:'Run 4',sc22:'Run 4'};
+const RUN_IDS={r1:['sc1','sc2','sc3','sc4','sc5','sc6','sc7','sc8'],r2:['sc9','sc10','sc11','sc12'],r3:['sc13','sc14','sc15','sc16','sc17'],r4:['sc18','sc19','sc20','sc21','sc22']};
+
+function switchTab(name,idx){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
-  if (name==='summary') updateSummaryPanel();
+  if(name==='summary')buildSummary();
 }
 
-function toggleScenario(id) {
-  document.getElementById(id+'-body').classList.toggle('open');
+function toggle(id){document.getElementById(id+'-body').classList.toggle('open');}
+
+function setS(id,status,btn){
+  ST[id]=status;
+  const badge=document.getElementById(id+'-b');
+  btn.closest('.status-row').querySelectorAll('.status-btn').forEach(b=>b.classList.remove('active-pass','active-fail','active-skip'));
+  if(status==='pass'){badge.className='badge badge-green';badge.textContent='✓ pass';btn.classList.add('active-pass');}
+  else if(status==='fail'){badge.className='badge badge-red';badge.textContent='✗ fail';btn.classList.add('active-fail');}
+  else{badge.className='badge badge-yellow';badge.textContent='→ skip';btn.classList.add('active-skip');}
+  updateStats();
 }
 
-function setStatus(id, status, btn) {
-  statuses[id] = status;
-  const badge = document.getElementById(id+'-badge');
-  btn.closest('.status-row').querySelectorAll('.status-btn').forEach(b => b.classList.remove('active-pass','active-fail','active-skip'));
-  if (status==='pass') { badge.className='badge badge-green'; badge.textContent='✓ pass'; btn.classList.add('active-pass'); }
-  else if (status==='fail') { badge.className='badge badge-red'; badge.textContent='✗ fail'; btn.classList.add('active-fail'); }
-  else { badge.className='badge badge-yellow'; badge.textContent='→ skip'; btn.classList.add('active-skip'); }
-  updateRunStats();
+function count(ids){let p=0,f=0,s=0;ids.forEach(id=>{if(ST[id]==='pass')p++;else if(ST[id]==='fail')f++;else if(ST[id]==='skip')s++;});return{p,f,s,done:p+f+s,total:ids.length};}
+
+function updateStats(){
+  ['r1','r2','r3','r4'].forEach(r=>{
+    const c=count(RUN_IDS[r]);
+    document.getElementById(r+'pass').textContent=c.p;
+    document.getElementById(r+'fail').textContent=c.f;
+    document.getElementById(r+'skip').textContent=c.s;
+    document.getElementById(r+'prog').style.width=(c.done/c.total*100)+'%';
+  });
 }
 
-function countRun(ids) {
+function buildSummary(){
   let p=0,f=0,s=0;
-  ids.forEach(id => { if(statuses[id]==='pass')p++; else if(statuses[id]==='fail')f++; else if(statuses[id]==='skip')s++; });
-  return {pass:p,fail:f,skip:s,done:p+f+s,total:ids.length};
-}
-
-function updateRunStats() {
-  const r1=countRun(run1Ids);
-  document.getElementById('r1pass').textContent=r1.pass;
-  document.getElementById('r1fail').textContent=r1.fail;
-  document.getElementById('r1skip').textContent=r1.skip;
-  document.getElementById('r1progress').style.width=(r1.done/r1.total*100)+'%';
-  const r2=countRun(run2Ids);
-  document.getElementById('r2pass').textContent=r2.pass;
-  document.getElementById('r2fail').textContent=r2.fail;
-  document.getElementById('r2skip').textContent=r2.skip;
-  document.getElementById('r2progress').style.width=(r2.done/r2.total*100)+'%';
-}
-
-function updateSummaryPanel() {
-  const all=[...run1Ids,...run2Ids];
-  let p=0,f=0,s=0;
-  all.forEach(id => { if(statuses[id]==='pass')p++; else if(statuses[id]==='fail')f++; else if(statuses[id]==='skip')s++; });
+  ALL_IDS.forEach(id=>{if(ST[id]==='pass')p++;else if(ST[id]==='fail')f++;else if(ST[id]==='skip')s++;});
   document.getElementById('totalPass').textContent=p;
   document.getElementById('totalFail').textContent=f;
   document.getElementById('totalSkip').textContent=s;
-  document.getElementById('totalProgress').style.width=((p+f+s)/all.length*100)+'%';
-  document.getElementById('summaryList').innerHTML=all.map((id,i)=>{
-    const st=statuses[id]||'čaká';
+  document.getElementById('totalProg').style.width=((p+f+s)/ALL_IDS.length*100)+'%';
+  document.getElementById('summaryList').innerHTML=ALL_IDS.map((id,i)=>{
+    const st=ST[id]||'čaká';
     const cls=st==='pass'?'badge-green':st==='fail'?'badge-red':st==='skip'?'badge-yellow':'badge-purple';
     const icon=st==='pass'?'✓':st==='fail'?'✗':st==='skip'?'→':'…';
     const note=document.getElementById(id+'-note')?.value||'';
-    const run=i<5?'Run 1':'Run 2';
-    return `<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;">
-      <span style="font-size:0.7rem;color:var(--muted);font-family:'DM Mono',monospace;min-width:45px">${run}</span>
-      <span style="font-size:0.75rem;font-family:'DM Mono',monospace;color:var(--muted);min-width:18px">${i+1}.</span>
-      <span style="flex:1;font-size:0.84rem;font-weight:600">${scenarioNames[id]}</span>
-      ${note?`<span style="font-size:0.7rem;color:var(--muted);font-family:'DM Mono',monospace;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic">${note}</span>`:''}
+    return`<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;">
+      <span style="font-size:0.7rem;color:var(--muted);font-family:'DM Mono',monospace;min-width:48px">${RUN_MAP[id]}</span>
+      <span style="font-size:0.75rem;font-family:'DM Mono',monospace;color:var(--muted);min-width:22px">${i+1}.</span>
+      <span style="flex:1;font-size:0.84rem;font-weight:600">${SC_NAMES[id]}</span>
+      ${note?`<span style="font-size:0.7rem;color:var(--muted);font-family:'DM Mono',monospace;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic">${note}</span>`:''}
       <span class="badge ${cls}">${icon} ${st}</span>
     </div>`;
   }).join('');
 }
 
-function selectLogo(el) {
-  document.querySelectorAll('.logo-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-}
+function selectLogo(el){document.querySelectorAll('.logo-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');}
+function copyField(id){const el=document.getElementById(id);navigator.clipboard.writeText(el.value).then(()=>{const b=el.parentElement.querySelector('.copy-btn');const o=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=o,1500);});}
+function copyEl(id){navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{const b=document.getElementById(id).parentElement.querySelector('.copy-btn');const o=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=o,1500);});}
+function copyAllData(){const t=`Firma: ${D.company}\nVAT: ${D.vat}\nAdresa: ${D.address}\nUser: ${D.user}\nPobočka: ${D.branch}\nPozícia: ${D.position}\nKandidát: ${D.candidate}\nKontrakt: ${D.ctype}\nScreenings: ${D.scr}\nPlatnosť: ${D.datefrom} – ${D.dateto}`;navigator.clipboard.writeText(t);}
 
-function copyField(id) {
-  const el=document.getElementById(id);
-  const val=el.type==='password'?el.value:el.value;
-  navigator.clipboard.writeText(val).then(()=>{
-    const btn=el.parentElement.querySelector('.copy-btn');
-    const orig=btn.textContent; btn.textContent='✓ ok';
-    setTimeout(()=>btn.textContent=orig,1500);
-  });
-}
-function copyEl(id) {
-  navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{
-    const btn=document.getElementById(id).parentElement.querySelector('.copy-btn');
-    const orig=btn.textContent; btn.textContent='✓ ok';
-    setTimeout(()=>btn.textContent=orig,1500);
-  });
-}
-
-async function callClaude(msgs) {
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',max_tokens:1000,
-      system:'Si expert QA tester webových aplikácií. Odpovedáš v slovenčine, stručne a prakticky. Poznáš Talentiqa – HR recruitment nástroj s AI prescreeningom kandidátov.',
-      messages:msgs
-    })
-  });
+// ── AI ──
+async function callClaude(msgs){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'Si expert QA tester webových aplikácií. Odpovedáš v slovenčine, stručne a prakticky. Poznáš Talentiqa – HR recruitment SaaS s AI prescreeningom kandidátov (admin.talentiqa.ai + portal-app.talentiqa.ai).',messages:msgs})});
   const d=await r.json();
   return d.content?.map(c=>c.text||'').join('')||'Chyba.';
 }
 
-async function sendAI() {
+async function generateJobDesc(){
+  const btn=document.getElementById('genBtn');
+  btn.disabled=true;
+  document.getElementById('genSpinner').style.display='inline-block';
+  document.getElementById('jobDesc').value='⏳ Generujem popis pozície...';
+  try{
+    const r=await callClaude([{role:'user',content:`Vygeneruj profesionálny popis pracovnej pozície "${D.position}" v slovenčine v štýle profesia.sk. Zahrň: náplň práce (5 bodov), požiadavky (5 bodov), benefity (3 body). Max 280 slov. Bez nadpisu.`}]);
+    document.getElementById('jobDesc').value=r;
+  }catch(e){document.getElementById('jobDesc').value='Chyba. Skús znova.';}
+  btn.disabled=false;
+  document.getElementById('genSpinner').style.display='none';
+}
+
+async function sendAI(){
   const input=document.getElementById('aiInput');
-  const msg=input.value.trim(); if(!msg)return;
+  const msg=input.value.trim();if(!msg)return;
   input.value='';
   addMsg('user',msg);
-  const lid=addMsg('ai','⏳ premýšľam...',true);
+  const lid=addMsg('ai','⏳...',true);
   document.getElementById('aiSendBtn').disabled=true;
-  try { const r=await callClaude([{role:'user',content:msg}]); document.getElementById(lid).classList.remove('loading'); document.getElementById(lid).textContent=r; }
-  catch(e) { document.getElementById(lid).textContent='Chyba: '+e.message; }
+  try{const r=await callClaude([{role:'user',content:msg}]);document.getElementById(lid).classList.remove('loading');document.getElementById(lid).textContent=r;}
+  catch(e){document.getElementById(lid).textContent='Chyba: '+e.message;}
   document.getElementById('aiSendBtn').disabled=false;
 }
 
-function quickAsk(q) {
-  switchTab('ai',3);
-  document.getElementById('aiInput').value=q;
-  sendAI();
-}
+function quickAsk(q){switchTab('ai',5);document.getElementById('aiInput').value=q;sendAI();}
 
-function addMsg(role,text,loading=false) {
+function addMsg(role,text,loading=false){
   const id='m'+Date.now();
   const div=document.createElement('div');
-  div.className=`msg msg-${role}`;
+  div.className='msg msg-'+role;
   div.innerHTML=`<div class="msg-avatar">${role==='ai'?'🤖':'👤'}</div><div class="msg-bubble${loading?' loading':''}" id="${id}">${text}</div>`;
   const msgs=document.getElementById('aiMessages');
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
   return id;
 }
 
-async function generateWithAI() {
-  const btn=event.target; btn.disabled=true;
-  document.getElementById('genSpinner').style.display='inline-block';
-  try {
-    const r=await callClaude([{role:'user',content:'Vygeneruj profesionálny popis pracovnej pozície Senior Java Developer v slovenčine pre Fintech spoločnosť. Zahrň náplň práce, požiadavky a benefity. Max 280 slov.'}]);
-    document.getElementById('jobDesc').value=r;
-  } catch(e) { alert('Chyba: '+e.message); }
-  btn.disabled=false; document.getElementById('genSpinner').style.display='none';
-}
-
-async function generateReport() {
-  const btn=event.target; btn.textContent='⏳ Generujem...'; btn.disabled=true;
-  const all=[...run1Ids,...run2Ids];
-  const summary=all.map((id,i)=>{
-    const st=statuses[id]||'čaká';
+async function generateReport(){
+  const btn=document.getElementById('reportBtn');
+  btn.disabled=true;
+  document.getElementById('reportSpinner').style.display='inline-block';
+  const summary=ALL_IDS.map((id,i)=>{
+    const st=ST[id]||'čaká';
     const note=document.getElementById(id+'-note')?.value||'';
-    return `${i+1}. ${scenarioNames[id]}: ${st}${note?' – '+note:''}`;
+    return`${i+1}. [${RUN_MAP[id]}] ${SC_NAMES[id]}: ${st}${note?' – '+note:''}`;
   }).join('\n');
-  try {
-    const r=await callClaude([{role:'user',content:`Vytvor profesionálny test report pre Talentiqa aplikáciu na základe výsledkov:\n\n${summary}\n\nZahrň: Executive Summary, zoznam issues, odporúčania.`}]);
+  try{
+    const r=await callClaude([{role:'user',content:`Vytvor profesionálny QA test report pre Talentiqa aplikáciu.\n\nRun #${D.runNum}\nFirma: ${D.company}\nPozícia: ${D.position}\nDátum: ${new Date().toLocaleDateString('sk-SK')}\n\nVýsledky testov:\n${summary}\n\nZahrň: Executive Summary (2-3 vety), zoznam Failed testov s popisom, odporúčania pre development tím.`}]);
     document.getElementById('reportText').textContent=r;
     document.getElementById('reportOutput').style.display='block';
-  } catch(e) { alert('Chyba: '+e.message); }
-  btn.textContent='📄 AI Report'; btn.disabled=false;
+  }catch(e){alert('Chyba: '+e.message);}
+  btn.disabled=false;
+  document.getElementById('reportSpinner').style.display='none';
 }
 
-function exportResults() {
-  const all=[...run1Ids,...run2Ids];
-  let txt=`TALENTIQA TEST RESULTS\n${'='.repeat(40)}\nDátum: ${new Date().toLocaleString('sk-SK')}\nTester: matejlalik@gmail.com\n\n`;
-  all.forEach((id,i)=>{
-    const st=statuses[id]||'čaká';
+function exportResults(){
+  const lines=[`TALENTIQA QA TEST REPORT`,'='.repeat(46),`Run #${D.runNum}  |  Dátum: ${new Date().toLocaleString('sk-SK')}`,`Firma: ${D.company}  |  Pozícia: ${D.position}`,`Tester: matejlalik@gmail.com`,`${'='.repeat(46)}`,''];
+  ALL_IDS.forEach((id,i)=>{
+    const st=ST[id]||'čaká';
     const note=document.getElementById(id+'-note')?.value||'';
-    txt+=`${i+1}. [${st.toUpperCase()}] ${scenarioNames[id]}\n`;
-    if(note) txt+=`   Bug: ${note}\n`;
+    lines.push(`${String(i+1).padStart(2,'0')}. [${st.toUpperCase().padEnd(4)}] [${RUN_MAP[id]}] ${SC_NAMES[id]}`);
+    if(note)lines.push(`    └─ Bug: ${note}`);
   });
   const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
-  a.download='talentiqa-results.txt'; a.click();
+  a.href=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/plain'}));
+  a.download=`talentiqa-run${D.runNum}-${D.company.replace(/[^a-zA-Z0-9]/g,'-')}.txt`;
+  a.click();
 }
+
+// init
+updateUI();
+generateJobDesc();
 </script>
 </body>
 </html>
